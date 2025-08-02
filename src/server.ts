@@ -1,4 +1,6 @@
-import {fastify} from "fastify";
+/** biome-ignore-all lint/suspicious/noConsole: <explanation> */
+
+import {fastify, type FastifyReply} from "fastify";
 import {
     serializerCompiler,
     validatorCompiler,
@@ -20,7 +22,7 @@ app.setValidatorCompiler(validatorCompiler)
 
 app.get('/health', () => {return 'OK'})
 
-app.get('/s3', async (req, res) =>{
+app.get('/s3', async (_, res: FastifyReply) =>{
     try {
         const pdfBuffer = await baixarPDFdoR2()
 
@@ -29,11 +31,10 @@ app.get('/s3', async (req, res) =>{
         res.send(data.text)
         
     } catch (error) {
-        console.error(error)
+        res.status(500).send(`Erro ao processar PDF - '${error}'`);
     }
 })
 
 app.listen({port: env.PORT}).then(() =>{
-    console.log(`Port: ${process.env.PORT}`)
     console.log('HTTP Server running! 🚀')
 })

@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node --env-file .env --loader ts-node/esm --no-warnings src/server.ts",
-    "dev": "node --env-file .env --loader ts-node/esm --no-warnings --watch src/server.ts"
+    "dev": "node --env-file .env --loader ts-node/esm --no-warnings --watch src/server.ts",
+    "postinstall": "patch-package"
   },
   "keywords": [],
   "author": "",
@@ -15,6 +16,8 @@
     "@biomejs/biome": "2.1.2",
     "@types/node": "^24.1.0",
     "@types/pdf-parse": "^1.1.5",
+    "patch-package": "^8.0.0",
+    "postinstall-postinstall": "^2.1.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2",
     "ultracite": "5.1.2"
@@ -27,8 +30,6 @@
     "fastify": "^5.4.0",
     "fastify-type-provider-zod": "^5.0.2",
     "pdf-parse": "^1.1.1",
-    "pdf2pic": "^3.2.0",
-    "tesseract.js": "^6.0.1",
     "zod": "^4.0.14"
   }
 }
