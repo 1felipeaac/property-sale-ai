@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/suspicious/noConsole: <explanation> */
 
-import {fastify, type FastifyReply} from "fastify";
+import {fastify, FastifyRequest, type FastifyReply} from "fastify";
 import {
     serializerCompiler,
     validatorCompiler,
@@ -8,8 +8,9 @@ import {
 } from 'fastify-type-provider-zod'
 import {fastifyCors} from '@fastify/cors'
 import { env } from "./env.ts";
-import pdf from 'pdf-parse';
-import { baixarPDFdoR2 } from "./services/cloudflare.ts";
+import { getContextoPDF, inicializarCachePDF } from "./services/cachePdf.ts";
+import z from "zod";
+import { pergunteSobreOImovel } from "./services/gemini.ts";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -22,19 +23,44 @@ app.setValidatorCompiler(validatorCompiler)
 
 app.get('/health', () => {return 'OK'})
 
-app.get('/s3', async (_, res: FastifyReply) =>{
+const perguntaSchema = z.object({
+  pergunta: z.string().min(5, {
+    message: "A pergunta deve ter pelo menos 5 caracteres.",
+  }),
+});
+
+app.post('/perguntar', {
+    schema: {
+        body: perguntaSchema
+    }
+}, async (req: FastifyRequest<{ Body: z.infer<typeof perguntaSchema> }>, res: FastifyReply) => {
+    const { pergunta } = req.body;
+
+    const contexto = getContextoPDF();
+
+    if (!contexto) {
+        return res.status(503).send({ error: "Serviço indisponível: o contexto do documento não está carregado." });
+    }
+
     try {
-        const pdfBuffer = await baixarPDFdoR2()
-
-        const data = await pdf(pdfBuffer)
-
-        res.send(data.text)
+        const resposta = await pergunteSobreOImovel(pergunta, contexto);
         
+        return res.send({ resposta: resposta });
+
     } catch (error) {
-        res.status(500).send(`Erro ao processar PDF - '${error}'`);
+        console.error(error);
+        return res.status(500).send({ error: "Ocorreu um erro ao processar sua pergunta." });
     }
 })
 
-app.listen({port: env.PORT}).then(() =>{
-    console.log('HTTP Server running! 🚀')
-})
+async function start(){
+    try {
+        await inicializarCachePDF()
+        await app.listen({port: env.PORT})
+    } catch (error) {
+        app.log.error(error)
+        process.exit(1)
+    }
+}
+
+start()

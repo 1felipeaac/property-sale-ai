@@ -6,14 +6,11 @@ const gemini = new GoogleGenerativeAI (env.GEMINI_API_KEY)
 
 const modelName = 'gemini-1.5-flash'
 const model = gemini.getGenerativeModel({ model: modelName });
-async function pergunteSobreOImovel(pergunta: string, contextoPDF: string): Promise<string> {
-    console.log("Construindo o prompt para a IA...");
+export async function pergunteSobreOImovel(pergunta: string, contextoPDF: string): Promise<string> {
 
-    // Esta é a parte mais importante: o "template" do prompt.
-    // Damos instruções claras para a IA.
     const promptCompleto = `
-        Você é um assistente especialista em analisar documentos.
-        Sua tarefa é responder a perguntas baseando-se estritamente no texto do documento fornecido.
+        Você é um assistente especialista em cartórios, análise de documentos, corretor de imóveis e advogado imobiliário.
+        Sua tarefa é responder a perguntas baseando-se no texto do documento fornecido.
         Se a resposta não estiver contida no texto, diga "Não consigo te responder essa pergunta".
         Não invente informações.
         Você não deve fornecer os nomes pessoais, números de documentos, matrículas e processos.
@@ -24,7 +21,7 @@ async function pergunteSobreOImovel(pergunta: string, contextoPDF: string): Prom
         ${contextoPDF}
         --- FIM DO DOCUMENTO ---
 
-        Com base no documento acima, responda à seguinte pergunta:
+        Com base no documento acima, leis e jurisprudências, responda à seguinte pergunta:
         Pergunta: "${pergunta}"
     `;
 
