@@ -1,8 +1,9 @@
-import { Readable } from "stream";
-import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+/** biome-ignore-all lint/suspicious/noConsole: <explanation> */
 import { env } from "../env.ts";
+import { GetObjectCommand, S3Client  } from "@aws-sdk/client-s3";
+import type { Readable } from "node:stream";
 
-async function streamToBuffer(stream: Readable): Promise<Buffer>{
+function streamToBuffer(stream: Readable): Promise<Buffer>{
     const chunks: Buffer[] = []
 
     return new Promise((resolve, reject) => {
@@ -33,9 +34,9 @@ export async function baixarPDFdoR2():Promise<Buffer>{
 
     const response = await s3.send(command)
 
-    if (response.Body) {
-        return streamToBuffer(response.Body as Readable);
-    } else {
+    if (!response.Body) {
         throw new Error("O corpo do arquivo retornado pelo R2 está vazio.");
     }
+
+    return streamToBuffer(response.Body as Readable);
 }

@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noConsole: <explanation> */
 import { GoogleGenerativeAI  } from "@google/generative-ai";
 import { env } from "../env.ts";
 

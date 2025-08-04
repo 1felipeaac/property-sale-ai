@@ -1,21 +1,21 @@
 /** biome-ignore-all lint/suspicious/noConsole: <explanation> */
 
-import {fastify, FastifyRequest, type FastifyReply} from "fastify";
+import { env } from "./env.ts";
+import {fastifyCors} from '@fastify/cors'
+import {fastify, type FastifyRequest, type FastifyReply} from "fastify";
 import {
     serializerCompiler,
     validatorCompiler,
     type ZodTypeProvider
 } from 'fastify-type-provider-zod'
-import {fastifyCors} from '@fastify/cors'
-import { env } from "./env.ts";
 import { getContextoPDF, inicializarCachePDF } from "./services/cachePdf.ts";
-import z from "zod";
 import { pergunteSobreOImovel } from "./services/gemini.ts";
+import z from "zod";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.register(fastifyCors, {
-    origin: 'http://localhost:5174/',
+    origin: 'http://localhost:5173',
 })
 
 app.setSerializerCompiler(serializerCompiler)
@@ -45,7 +45,7 @@ app.post('/perguntar', {
     try {
         const resposta = await pergunteSobreOImovel(pergunta, contexto);
         
-        return res.send({ resposta: resposta });
+        return res.send({ resposta });
 
     } catch (error) {
         console.error(error);

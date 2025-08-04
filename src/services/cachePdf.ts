@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noConsole: <explanation> */
 import { baixarPDFdoR2 } from "./cloudflare.ts";
 import pdf from "pdf-parse"
 
@@ -12,7 +13,7 @@ export async function inicializarCachePDF():Promise<void>{
         contextoPDFCache = data.text;
         console.log("✅ Cache do PDF aquecido com sucesso! A aplicação está pronta.");
     } catch (error) {
-        throw new Error("Não foi possível carregar o documento principal.");
+        throw new Error(`Não foi possível carregar o documento principal. ${error}`);
     }
 
 }
