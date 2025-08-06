@@ -4,7 +4,7 @@
   "main": "src/server.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc --outDir dist",
     "start": "node dist/server.js",
     "dev": "node --env-file .env --loader ts-node/esm --no-warnings --watch src/server.ts",
     "postinstall": "patch-package"
