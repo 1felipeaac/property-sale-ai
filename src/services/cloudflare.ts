@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/suspicious/noConsole: <explanation> */
-import { env } from "../env.js";
+import { env } from "../env.ts";
 import { GetObjectCommand, S3Client  } from "@aws-sdk/client-s3";
 import type { Readable } from "node:stream";
 
