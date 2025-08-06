@@ -15,6 +15,7 @@
     "moduleResolution": "nodenext",
     "strictNullChecks": true
   }, 
+  "include": ["src"],
   "editor.codeActionsOnSave": {
     "source.organizeImports.biome": "explicit",
     "source.fixAll.biome": "explicit"

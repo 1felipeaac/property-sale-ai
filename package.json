@@ -1,10 +1,11 @@
 {
   "name": "property-sale-ai",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/server.ts",
   "type": "module",
   "scripts": {
-    "start": "node --env-file .env --loader ts-node/esm --no-warnings src/server.ts",
+    "build": "tsc -p tsconfig.build.json",
+    "start": "node dist/server.js",
     "dev": "node --env-file .env --loader ts-node/esm --no-warnings --watch src/server.ts",
     "postinstall": "patch-package"
   },
