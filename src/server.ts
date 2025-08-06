@@ -1,6 +1,6 @@
 /** biome-ignore-all lint/suspicious/noConsole: <explanation> */
 
-import { env } from "./env.ts";
+
 import { fastifyCors } from '@fastify/cors'
 import { fastify } from "fastify";
 import {
@@ -8,9 +8,10 @@ import {
     validatorCompiler,
     type ZodTypeProvider
 } from 'fastify-type-provider-zod'
-import { inicializarCachePDF } from "./utils/cachePdf.ts";
-import { listaPermitida, origensPermitidas } from "./utils/origensPermitidas.ts";
-import { httpRoutes } from "./http/routes/httpRoutes.ts";
+import { httpRoutes } from './http/routes/httpRoutes.js';
+import { inicializarCachePDF } from './utils/cachePdf.js';
+import { origensPermitidas, listaPermitida } from './utils/origensPermitidas.js';
+import { env } from './env.js';
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 

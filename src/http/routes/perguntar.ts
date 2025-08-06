@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
-import { getContextoPDF } from "../../utils/cachePdf.ts";
-import { pergunteSobreOImovel } from "../../services/gemini.ts";
+import { getContextoPDF } from "../../utils/cachePdf.js";
+import { pergunteSobreOImovel } from "../../services/gemini.js";
 
 const perguntaSchema = z.object({
     pergunta: z.string().min(5, {

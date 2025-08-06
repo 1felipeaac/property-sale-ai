@@ -1,5 +1,5 @@
 /** biome-ignore-all lint/suspicious/noConsole: <explanation> */
-import { baixarPDFdoR2 } from "../services/cloudflare.ts";
+import { baixarPDFdoR2 } from "../services/cloudflare.js";
 import pdf from "pdf-parse"
 
 let contextoPDFCache: string | null = null

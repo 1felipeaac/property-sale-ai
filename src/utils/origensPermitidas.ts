@@ -1,4 +1,4 @@
-import { env } from "../env.ts"
+import { env } from "../env.js"
 
 export function origensPermitidas(origin: string | undefined, listaPermitida: string[]): boolean {
     if(!origin) return true
