@@ -1,11 +1,12 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-      "noEmit": false,
+      "noEmit": true,
       "outDir": "dist",
       "rootDir": "src",
       "module": "ESNext",         // ou CommonJS se preferir
-      "moduleResolution": "Node"
+      "moduleResolution": "Node",
+      "allowImportingTsExtensions": true,
     }
   }
   
