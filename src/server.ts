@@ -1,57 +1,34 @@
 /** biome-ignore-all lint/suspicious/noConsole: <explanation> */
 
 import { env } from "./env.ts";
-import {fastifyCors} from '@fastify/cors'
-import {fastify, type FastifyRequest, type FastifyReply} from "fastify";
+import { fastifyCors } from '@fastify/cors'
+import { fastify } from "fastify";
 import {
     serializerCompiler,
     validatorCompiler,
     type ZodTypeProvider
 } from 'fastify-type-provider-zod'
-import { getContextoPDF, inicializarCachePDF } from "./services/cachePdf.ts";
-import { pergunteSobreOImovel } from "./services/gemini.ts";
-import z from "zod";
+import { inicializarCachePDF } from "./utils/cachePdf.ts";
+import { listaPermitida, origensPermitidas } from "./utils/origensPermitidas.ts";
+import { httpRoutes } from "./http/routes/httpRoutes.ts";
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.register(fastifyCors, {
-    origin: 'http://localhost:5173',
+    origin: (origin, cb) => {
+        if (origensPermitidas(origin, listaPermitida)) {
+          cb(null, true);
+        } else {
+          cb(new Error("Origin não permitido"), false);
+        }
+      },
+    methods: ['GET', 'POST', 'PUT'],
 })
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
 
-app.get('/health', () => {return 'OK'})
-
-const perguntaSchema = z.object({
-  pergunta: z.string().min(5, {
-    message: "A pergunta deve ter pelo menos 5 caracteres.",
-  }),
-});
-
-app.post('/perguntar', {
-    schema: {
-        body: perguntaSchema
-    }
-}, async (req: FastifyRequest<{ Body: z.infer<typeof perguntaSchema> }>, res: FastifyReply) => {
-    const { pergunta } = req.body;
-
-    const contexto = getContextoPDF();
-
-    if (!contexto) {
-        return res.status(503).send({ error: "Serviço indisponível: o contexto do documento não está carregado." });
-    }
-
-    try {
-        const resposta = await pergunteSobreOImovel(pergunta, contexto);
-        
-        return res.send({ resposta });
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).send({ error: "Ocorreu um erro ao processar sua pergunta." });
-    }
-})
+app.register(httpRoutes)
 
 async function start(){
     try {
