@@ -7,7 +7,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
+    "build": "tsc --outDir dist",
     "start": "node dist/server.js",
     "dev": "node --env-file .env --loader ts-node/esm --no-warnings --watch src/server.ts",
     "postinstall": "patch-package"
@@ -31,6 +31,7 @@
     "@fastify/cors": "^11.1.0",
     "@google/genai": "^1.12.0",
     "@google/generative-ai": "^0.24.1",
+    "dotenv": "^17.2.1",
     "fastify": "^5.4.0",
     "fastify-type-provider-zod": "^5.0.2",
     "pdf-parse": "^1.1.1",

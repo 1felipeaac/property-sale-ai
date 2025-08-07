@@ -1,8 +1,8 @@
 /** biome-ignore-all lint/suspicious/noConsole: <explanation> */
 import { GoogleGenerativeAI  } from "@google/generative-ai";
-import { env } from "../env.ts";
-import { gerarHash } from "../utils/gerarHash.ts";
-import { deleteCacheKey, getCache, setCache } from "../utils/cacheRespostas.ts";
+import { env } from "../env.js";
+import { gerarHash } from "../utils/gerarHash.js";
+import { getCache, setCache, deleteCacheKey } from "../utils/cacheRespostas.js";
 
 const gemini = new GoogleGenerativeAI (env.GEMINI_API_KEY)
 

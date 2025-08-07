@@ -7,13 +7,14 @@
     ],
     "module": "nodenext",
     "target": "ESNext",
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
+    "noEmit": false,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "moduleResolution": "nodenext",
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "outDir": "dist",
+    "rootDir": "src"
   }, 
   "include": ["src"],
   "editor.codeActionsOnSave": {
